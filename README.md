@@ -1,3 +1,17 @@
+# distributed_music
+
+A decentralized react app and Ethereum smart contract for streaming music.
+
+Artists upload their work.  Listeners can stream artists' work for a small fee.  The fee goes directly to the artist, with a small amount going to the developer.
+
+This project is mostly so that I can learn Ethereum smart contract development.
+
+## Goals
+1. Tracks - upload, list, and play tracks
+2. Albums - group tracks by album
+3. Artists - group work by artists
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
