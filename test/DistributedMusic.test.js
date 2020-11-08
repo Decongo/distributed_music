@@ -15,5 +15,10 @@ contract('DiMu', ([deployer, author]) => {
       assert.notEqual(address, null);
       assert.notEqual(address, undefined);
     })
+
+    it('has a name', async () => {
+      const name = await dimu.name()
+      assert.equal(name, 'DistributedMusic')
+    })
   })
 })
