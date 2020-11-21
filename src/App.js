@@ -11,7 +11,9 @@ class App extends Component {
     super(props);
     this.state = {
       accountAddress: '',
-      contractAddress: ''
+      contractAddress: '',
+      dimu: null,
+      trackCount: 'not initialized'
     };
   }
 
@@ -40,15 +42,16 @@ class App extends Component {
     // Load account
     const accounts = await web3.eth.getAccounts();
     this.setState({ accountAddress: accounts[0] });
-    // Network ID
-    const networkId = await web3.eth.net.getId()
-    const networkData = Dimu.networks[networkId]
+
+    // Connect to network
+    const networkID = await web3.eth.net.getId()
+    const networkData = Dimu.networks[networkID]
+
     if(networkData) {
       const dimu = new web3.eth.Contract(Dimu.abi, networkData.address)
-      console.log(networkData.address);
-      this.setState({ dimu })
-      // const videosCount = await dvideo.methods.videoCount().call()
-      // this.setState({ videosCount })
+      this.setState({ dimu });
+      const trackCount = await dimu.methods.trackCount().call();
+      this.setState({ trackCount });
 
       // // Load videos, sort by newest
       // for (var i=videosCount; i>=1; i--) {
@@ -77,6 +80,7 @@ class App extends Component {
           <NavBar.Brand>Distributed Music</NavBar.Brand>
           <NavBar.Text>{ this.state.accountAddress || 'Please connect to Ethereum via MetaMask' }</NavBar.Text>
         </NavBar>
+        Track count: { this.state.trackCount }
       </div>
     );
   }
