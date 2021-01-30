@@ -4,6 +4,7 @@ import Dimu from './abis/DistributedMusic.json';
 import React, { Component } from 'react';
 import Web3 from 'web3';
 import NavBar from 'react-bootstrap/NavBar'
+import UploadTrack from './components/UploadTrack.js'
 
 class App extends Component {
 
@@ -80,7 +81,14 @@ class App extends Component {
           <NavBar.Brand>Distributed Music</NavBar.Brand>
           <NavBar.Text>{ this.state.accountAddress || 'Please connect to Ethereum via MetaMask' }</NavBar.Text>
         </NavBar>
-        Track count: { this.state.trackCount }
+        
+        <div>
+          Track count: { this.state.trackCount }
+        </div>
+
+        <div>
+          <UploadTrack />
+        </div>
       </div>
     );
   }
