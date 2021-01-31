@@ -35,3 +35,16 @@ This will serve the front end on port 3000.
 ## Connect to the Blockchain Through MetaMask
 
 Ensure that you have the MetaMask extension installed.  Also ensure that metamask is set up to connect to Ganache.  You may have to add a custom RPC.  Use the information on the "Accounts" screen of Ganache.
+
+
+# Other Commands
+
+## Redeploy Smart Contract
+
+If you make any changes to the smart contract, redeploy it to Ganache by using:
+
+`truffle migrate --reset`
+
+## Test Smart Contract
+
+`truffle test`
