@@ -23,7 +23,6 @@ class UploadTrack extends Component {
 
   uploadTrack(event) {
     event.preventDefault();
-    console.log('Track name:', this.state.trackName);
 
     // make track
     const track = new Track(this.state.trackName);
