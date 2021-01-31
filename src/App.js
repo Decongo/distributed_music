@@ -3,8 +3,10 @@ import './App.css';
 import Dimu from './abis/DistributedMusic.json';
 import React, { Component } from 'react';
 import Web3 from 'web3';
-import NavBar from 'react-bootstrap/NavBar'
-import UploadTrack from './components/UploadTrack.js'
+import NavBar from 'react-bootstrap/NavBar';
+import UploadTrack from './components/UploadTrack.js';
+import { connect } from 'react-redux';
+
 
 class App extends Component {
 
@@ -74,6 +76,12 @@ class App extends Component {
     }
   }
 
+
+  renderTracks() {
+    return this.props.tracks.map(track => <p>{track.name}</p>)
+  }
+
+
   render() {
     return (
       <div className="App">
@@ -89,9 +97,21 @@ class App extends Component {
         <div>
           <UploadTrack />
         </div>
+
+        <div>
+          {this.renderTracks()}
+        </div>
       </div>
     );
   }
 }
 
-export default App;
+
+function mapStateToProps(state) {
+  return {
+    tracks: state.tracks
+  }
+}
+
+
+export default connect(mapStateToProps)(App);

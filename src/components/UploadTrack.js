@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import { Button, Modal, Form } from 'react-bootstrap';
+import { trackAdded } from '../store/actions.js';
+import Track from '../models/Track.js';
 
 
 
@@ -21,6 +24,12 @@ class UploadTrack extends Component {
   uploadTrack(event) {
     event.preventDefault();
     console.log('Track name:', this.state.trackName);
+
+    // make track
+    const track = new Track(this.state.trackName);
+
+    // dispatch track action
+    this.props.dispatch(trackAdded(track));
   }
 
 
@@ -75,4 +84,4 @@ class UploadTrack extends Component {
 }
 
 
-export default UploadTrack;
+export default connect()(UploadTrack);
