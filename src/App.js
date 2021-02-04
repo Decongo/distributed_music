@@ -4,7 +4,7 @@ import Dimu from './abis/DistributedMusic.json';
 import React, { Component } from 'react';
 import Web3 from 'web3';
 import NavBar from 'react-bootstrap/NavBar';
-import UploadTrack from './components/UploadTrack.js';
+import TrackUploader from './components/TrackUploader.js';
 import { connect } from 'react-redux';
 
 
@@ -95,7 +95,7 @@ class App extends Component {
         </div>
 
         <div>
-          <UploadTrack />
+          <TrackUploader />
         </div>
 
         <div>

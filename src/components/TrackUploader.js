@@ -6,7 +6,7 @@ import Track from '../models/Track.js';
 
 
 
-class UploadTrack extends Component {
+class TrackUploader extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -83,4 +83,4 @@ class UploadTrack extends Component {
 }
 
 
-export default connect()(UploadTrack);
+export default connect()(TrackUploader);
