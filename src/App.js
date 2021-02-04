@@ -6,6 +6,11 @@ import Web3 from 'web3';
 import NavBar from 'react-bootstrap/NavBar';
 import TrackUploader from './components/TrackUploader.js';
 import { connect } from 'react-redux';
+import {
+  loadWeb3,
+  loadDimu,
+  loadAccount
+} from './store/interactions.js';
 
 
 class App extends Component {
@@ -21,38 +26,27 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    await this.loadWeb3();
-    await this.loadBlockchainData();
+    const dispatch = this.props.dispatch;
+    await this.loadBlockchainData(dispatch);
   }
 
+  async loadBlockchainData(dispatch) {
+    const web3 = loadWeb3(dispatch);
+    await window.ethereum.enable();
 
-  async loadWeb3() {
-    if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      await window.ethereum.enable();
-    }
-    else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider);
-    }
-    else {
-      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
-    }
-  }
-
-
-  async loadBlockchainData() {
-    const web3 = window.web3;
     // Load account
-    const accounts = await web3.eth.getAccounts();
-    this.setState({ accountAddress: accounts[0] });
+    const account = await loadAccount(web3, dispatch);
 
     // Connect to network
     const networkID = await web3.eth.net.getId()
     const networkData = Dimu.networks[networkID]
 
     if(networkData) {
-      const dimu = new web3.eth.Contract(Dimu.abi, networkData.address)
-      this.setState({ dimu });
+      const dimu = await loadDimu(web3, networkID, dispatch);
+      if (!dimu) {
+        window.alert('Distributed Music contract not found. Please try connecting to another network.');
+      }
+      
       const trackCount = await dimu.methods.trackCount().call();
       this.setState({ trackCount });
 
@@ -78,7 +72,7 @@ class App extends Component {
 
 
   renderTracks() {
-    return this.props.tracks.map(track => <p>{track.name}</p>)
+    return this.props.tracks.map(track => <p>{track.title}</p>)
   }
 
 
@@ -87,7 +81,7 @@ class App extends Component {
       <div className="App">
         <NavBar bg='dark' variant='dark'>
           <NavBar.Brand>Distributed Music</NavBar.Brand>
-          <NavBar.Text>{ this.state.accountAddress || 'Please connect to Ethereum via MetaMask' }</NavBar.Text>
+          <NavBar.Text>{ this.props.accountAddress || 'Please connect to Ethereum via MetaMask' }</NavBar.Text>
         </NavBar>
         
         <div>
@@ -109,7 +103,9 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    tracks: state.tracks
+    tracks: state.tracks,
+    dimuContract: state.dimuContract,
+    accountAddress: state.accountAddress
   }
 }
 
