@@ -1,6 +1,6 @@
 class Track {
-  constructor(name = 'Untitled Track') {
-    this.name = name;
+  constructor(title = 'Untitled Track') {
+    this.title = title;
     // this.id = id;
     // this.hash = hash;
     // this.uploader = uploader;
