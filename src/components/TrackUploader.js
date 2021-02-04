@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Button, Modal, Form } from 'react-bootstrap';
-import { trackAdded } from '../store/actions.js';
+import { uploadTrack } from '../store/interactions.js';
 import Track from '../models/Track.js';
 
 
@@ -10,7 +10,7 @@ class TrackUploader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      trackName: '',
+      trackTitle: '',
       showModal: false
     };
 
@@ -23,12 +23,13 @@ class TrackUploader extends Component {
 
   uploadTrack(event) {
     event.preventDefault();
+    const { dimuContract, accountAddress, dispatch } = this.props;
 
     // make track
-    const track = new Track(this.state.trackName);
+    const track = new Track(this.state.trackTitle);
 
-    // dispatch track action
-    this.props.dispatch(trackAdded(track));
+    // upload track to blockchain
+    uploadTrack(dimuContract, track, accountAddress, dispatch);
   }
 
 
@@ -43,7 +44,7 @@ class TrackUploader extends Component {
 
 
   handleInputChange(event) {
-    this.setState({ trackName: event.target.value });
+    this.setState({ trackTitle: event.target.value });
   }
 
 
@@ -59,14 +60,14 @@ class TrackUploader extends Component {
 
           <Modal.Body>
             <Form onSubmit={this.uploadTrack}>
-              <Form.Group controlId='formTrackName'>
+              <Form.Group controlId='formTrackTitle'>
                 <Form.Label>Track Name</Form.Label>
                 <Form.Control 
                   type='text' 
                   size='lg'
                   placeholder='Track Name...' 
                   onChange={this.handleInputChange}
-                  value={this.state.trackName}
+                  value={this.state.trackTitle}
                 />
               </Form.Group>
             </Form>
@@ -83,4 +84,12 @@ class TrackUploader extends Component {
 }
 
 
-export default connect()(TrackUploader);
+function mapStateToProps(state) {
+  return {
+    dimuContract: state.dimuContract,
+    accountAddress: state.accountAddress
+  }
+}
+
+
+export default connect(mapStateToProps)(TrackUploader);
