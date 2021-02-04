@@ -6,6 +6,24 @@ export default function RootReducer(state = {}, action) {
         tracks: [...state.tracks, action.track]
       }
     }
+    case 'load/web3Loaded': {
+      return {
+        ...state,
+        web3Connection: action.web3Connection
+      }
+    }
+    case 'load/dimuLoaded': {
+      return {
+        ...state,
+        dimuContract: action.dimuContract
+      }
+    }
+    case 'load/accountLoaded': {
+      return {
+        ...state,
+        accountAddress: action.accountAddress
+      }
+    }
     default: 
       return state;
   }
