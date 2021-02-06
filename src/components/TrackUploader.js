@@ -21,7 +21,7 @@ class TrackUploader extends Component {
   }
 
 
-  uploadTrack(event) {
+  async uploadTrack(event) {
     event.preventDefault();
     const { dimuContract, accountAddress, dispatch } = this.props;
 
@@ -29,7 +29,14 @@ class TrackUploader extends Component {
     const track = new Track(this.state.trackTitle);
 
     // upload track to blockchain
-    uploadTrack(dimuContract, track, accountAddress, dispatch);
+    try {
+      await uploadTrack(dimuContract, track, accountAddress, dispatch);
+      this.closeModal();
+      this.setState({ trackTitle: '' });
+    } catch (e) {
+      console.error(e);
+      window.alert('There was an error.');
+    }
   }
 
 

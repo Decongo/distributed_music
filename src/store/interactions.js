@@ -32,13 +32,12 @@ export const loadAccount = async (web3, dispatch) => {
 }
 
 export const uploadTrack = async (dimu, track, account, dispatch) => {
-  dimu.methods.uploadTrack('testhash', track.title).send({ from: account })
+  await dimu.methods.uploadTrack('testhash', track.title).send({ from: account })
   .on('transactionHash', hash => {
     dispatch(trackAdded(track));
   })
   .on('error', error => {
-    console.error(error);
-    window.alert('There was an error.');
+    throw new Error(error);
   });
 }
 
